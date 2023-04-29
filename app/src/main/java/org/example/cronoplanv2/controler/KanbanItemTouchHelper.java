@@ -1,4 +1,4 @@
-package org.example.cronoplanv2;
+package org.example.cronoplanv2.controler;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;

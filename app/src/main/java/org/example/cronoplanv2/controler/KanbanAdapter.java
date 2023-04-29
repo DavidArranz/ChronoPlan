@@ -1,4 +1,4 @@
-package org.example.cronoplanv2;
+package org.example.cronoplanv2.controler;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.example.cronoplanv2.R;
 import org.example.cronoplanv2.model.Task;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.example.cronoplanv2;
+package org.example.cronoplanv2.controler;
 
 import android.os.Bundle;
 
@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.example.cronoplanv2.R;
 import org.example.cronoplanv2.model.Task;
+import org.example.cronoplanv2.model.ItemsDAO.TaskDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,11 @@ public class KanbanFragment extends Fragment {
     private RecyclerView toDoRecyclerView;
     private RecyclerView inProgressRecyclerView;
     private RecyclerView doneRecyclerView;
+
+    public static boolean updated = true;
+
+    private final TaskDAO TASKDATA = new TaskDAO();
+
 
     public KanbanFragment() {
     }
@@ -79,12 +86,24 @@ public class KanbanFragment extends Fragment {
         itemTouchHelperToDo.attachToRecyclerView(toDoRecyclerView);
         itemTouchHelperInProgress.attachToRecyclerView(inProgressRecyclerView);
         itemTouchHelperDone.attachToRecyclerView(doneRecyclerView);
+        //comprueba si ya esta actualizado
+        if(updated) {
+            toDoTasks.clear();
+            inProgressTasks.clear();
+            doneTasks.clear();
+            ArrayList<Task> task_list = TASKDATA.list();
+            for (Task task : task_list) {
+                int status = task.getStatus();
+                if (status == 1) {
+                    toDoTasks.add(task);
+                } else if (status == 2) {
+                    inProgressTasks.add(task);
+                } else {
+                    doneTasks.add(task);
+                }
+            }
+        }
 
-        // ejemplos
-        toDoTasks.add(new Task("Task 1", "Description for task 1", 0));
-        toDoTasks.add(new Task("Task 2", "Description for task 2", 0));
-        inProgressTasks.add(new Task("Task 3", "Description for task 3", 1));
-        doneTasks.add(new Task("Task 4", "Description for task 4", 2));
 
         // notificacion de los cambios
         toDoAdapter.notifyDataSetChanged();

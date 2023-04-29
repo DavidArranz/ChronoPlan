@@ -1,4 +1,4 @@
-package org.example.cronoplanv2;
+package org.example.cronoplanv2.controler;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.example.cronoplanv2.R;
 
 /**
  * A simple {@link Fragment} subclass.
