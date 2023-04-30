@@ -61,18 +61,5 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    @Override
-    protected void onResume() {
-
-
-        super.onResume();
-        if(SETTINGS.isUpdated()){
-            loadFragment(thirdFragment);
-            navigation.getMenu().findItem(R.id.thirdFragment).setChecked(true);
-        }else {
-            loadFragment(firstFragment);
-            navigation.getMenu().findItem(R.id.firstFragment).setChecked(true);
-        }
-    }
 
 }

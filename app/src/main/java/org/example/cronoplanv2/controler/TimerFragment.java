@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +28,12 @@ public class TimerFragment extends Fragment {
 
     private enum TimerStatus {
         STARTED,
-        STOPPED
+        STOPPED,
+        UNSTARTED
+
     }
     private final SettingsDAO SETTINGS = new SettingsDAO();
-    private TimerStatus timerStatus = TimerStatus.STOPPED;
+    private TimerStatus timerStatus = TimerStatus.UNSTARTED;
 
     private ProgressBar progressBarCircle;
     private TextView textViewTime;
@@ -71,6 +74,8 @@ public class TimerFragment extends Fragment {
     private void initViews(View view) {
         progressBarCircle = (ProgressBar) view.findViewById(R.id.progressBarCircle);
         textViewTime = (TextView) view.findViewById(R.id.tvTime);
+        setTimerValues();
+        textViewTime.setText(hmsTimeFormatter(timeCountInMilliSeconds));
         imageViewReset = (ImageView) view.findViewById(R.id.ivReset);
         imageViewStartStop = (ImageView) view.findViewById(R.id.ivStartStop);
         ivSettings = (ImageView) view.findViewById(R.id.ivSettings);
@@ -105,7 +110,18 @@ public class TimerFragment extends Fragment {
      */
     private void reset() {
         stopCountDownTimer();
-        startCountDownTimer();
+        // call to initialize the timer values
+        setTimerValues();
+        // call to initialize the progress bar values
+        setProgressBarValues();
+
+        textViewTime.setText(hmsTimeFormatter(timeCountInMilliSeconds));
+        // hiding the reset icon
+        imageViewReset.setVisibility(View.GONE);
+        // changing stop icon to start icon
+        //imageViewStartStop.setImageResource(R.drawable.icon_start);
+        // changing the timer status to stopped
+        timerStatus = TimerStatus.UNSTARTED;
     }
 
 
@@ -113,7 +129,7 @@ public class TimerFragment extends Fragment {
      * method to start and stop count down timer
      */
     private void startStop() {
-        if (timerStatus == TimerStatus.STOPPED) {
+        if (timerStatus == TimerStatus.UNSTARTED) {
 
             // call to initialize the timer values
             setTimerValues();
@@ -128,7 +144,7 @@ public class TimerFragment extends Fragment {
             // call to start the count down timer
             startCountDownTimer();
 
-        } else {
+        } else if (timerStatus == TimerStatus.STARTED){
 
             // hiding the reset icon
             imageViewReset.setVisibility(View.GONE);
@@ -138,6 +154,15 @@ public class TimerFragment extends Fragment {
             timerStatus = TimerStatus.STOPPED;
             stopCountDownTimer();
 
+        } else {
+            // showing the reset icon
+            imageViewReset.setVisibility(View.VISIBLE);
+            // changing play icon to stop icon
+            //imageViewStartStop.setImageResource(R.drawable.icon_stop);
+            // changing the timer status to started
+            timerStatus = TimerStatus.STARTED;
+            // call to start the count down timer
+            startCountDownTimer();
         }
 
     }
@@ -158,6 +183,7 @@ public class TimerFragment extends Fragment {
         countDownTimer = new CountDownTimer(timeCountInMilliSeconds, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                timeCountInMilliSeconds=millisUntilFinished;
 
                 textViewTime.setText(hmsTimeFormatter(millisUntilFinished));
 
@@ -167,18 +193,8 @@ public class TimerFragment extends Fragment {
 
             @Override
             public void onFinish() {
-
-                textViewTime.setText(hmsTimeFormatter(timeCountInMilliSeconds));
-                // call to initialize the progress bar values
-                setProgressBarValues();
-                // hiding the reset icon
-                imageViewReset.setVisibility(View.GONE);
-                // changing stop icon to start icon
-                //imageViewStartStop.setImageResource(R.drawable.icon_start);
-                // changing the timer status to stopped
-                timerStatus = TimerStatus.STOPPED;
+                reset();
             }
-
         }.start();
         countDownTimer.start();
     }
@@ -221,9 +237,4 @@ public class TimerFragment extends Fragment {
     /**
      * set the settings in case they have changed
      */
-    @Override
-    public void onResume() {
-        super.onResume();
-        setTimerValues();
-    }
 }
