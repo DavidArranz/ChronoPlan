@@ -66,16 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         super.onResume();
-        // Get the calling activity, if any
-        String callingActivity = null;
-        if (getCallingActivity() != null) {
-            String packageName = getCallingActivity().getPackageName();
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
-            if (launchIntent != null) {
-                callingActivity = launchIntent.getComponent().getClassName();
-                System.out.println("Called from activity: " + callingActivity);
-            }
-        }
         if(SETTINGS.isUpdated()){
             loadFragment(thirdFragment);
             navigation.getMenu().findItem(R.id.thirdFragment).setChecked(true);

@@ -59,7 +59,7 @@ public class SettingsDAO {
             if (rs.next()) {
                 if(rs.getBoolean(1)){
                     ps = CON.conectar().prepareStatement("update SETTINGS set isUpdated=0 where User_id like 'Default_user'");
-                    ps.executeQuery();
+                    ps.executeUpdate();
                     return true;
                 }else{
                     return false;
