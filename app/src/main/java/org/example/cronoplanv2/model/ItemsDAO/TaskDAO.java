@@ -21,7 +21,7 @@ public class TaskDAO {
 
         ArrayList<Task> tasks = null;
         try {
-            ps = CON.conectar().prepareStatement("SELECT title,description,status,id from TASKS");
+            ps = CON.conectar().prepareStatement("SELECT title,description,status,id_task from TASKS");
             tasks = new ArrayList<Task>();
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -37,5 +37,35 @@ public class TaskDAO {
             CON.desconectar();
         }
         return tasks;
+    }
+
+    public void insertTask(Task newTask) {
+        try {
+            ps = CON.conectar().prepareStatement("INSERT into TASKS (title,description,status) values(?,?,?) ");
+            ps.setString(1,newTask.getTitle());
+            ps.setString(2, newTask.getDescription());
+            ps.setInt(3,newTask.getStatus());
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ps = null;
+            CON.desconectar();
+        }
+    }
+
+    public void insertTime(int id) {
+        try {
+            ps = CON.conectar().prepareStatement("exec pinsert_time ?");
+            ps.setInt(1,id);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ps = null;
+            CON.desconectar();
+        }
     }
 }

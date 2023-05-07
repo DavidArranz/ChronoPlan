@@ -5,26 +5,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.ActionMode;
 import android.view.MenuItem;
 
 import org.example.cronoplanv2.R;
 import org.example.cronoplanv2.model.ItemsDAO.SettingsDAO;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private final SettingsDAO SETTINGS = new SettingsDAO();
-    FirstFragment firstFragment = new FirstFragment();
-    KanbanFragment secondFragment = new KanbanFragment();
-    TimerFragment thirdFragment = new TimerFragment();
-    BottomNavigationView navigation;
+    private FirstFragment firstFragment = new FirstFragment();
+    private KanbanFragment secondFragment = new KanbanFragment();
+    private TimerFragment thirdFragment = new TimerFragment();
+    private BottomNavigationView navigation;
+    private NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,31 +35,43 @@ public class MainActivity extends AppCompatActivity {
 
         navigation = findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            int id = item.getItemId();
             switch (item.getItemId()) {
                 case R.id.firstFragment:
-                    loadFragment(firstFragment);
+                    loadSelectedFragment(firstFragment);
                     return true;
                 case R.id.secondFragment:
-                    loadFragment(secondFragment);
+                    loadSelectedFragment(secondFragment);
                     return true;
                 case R.id.thirdFragment:
-                    loadFragment(thirdFragment);
+                    loadSelectedFragment(thirdFragment);
                     return true;
             }
             return false;
         }
     };
 
-    public void loadFragment(Fragment fragment){
+    public void loadSelectedFragment(Fragment fragment){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container,fragment);
         transaction.commit();
     }
 
+    public void setNavigationBar(int f){
+        if(f==1){
+            navigation.setSelectedItemId(R.id.firstFragment);
+
+        }else if(f==2){
+            navigation.setSelectedItemId(R.id.secondFragment);
+        }else if(f==3){
+            navigation.setSelectedItemId(R.id.thirdFragment);
+        }
+    }
 
 }

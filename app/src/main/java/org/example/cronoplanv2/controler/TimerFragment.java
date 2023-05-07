@@ -3,6 +3,8 @@ package org.example.cronoplanv2.controler;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
@@ -13,12 +15,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.example.cronoplanv2.R;
 import org.example.cronoplanv2.model.ItemsDAO.SettingsDAO;
+import org.example.cronoplanv2.model.ItemsDAO.TaskDAO;
 import org.example.cronoplanv2.model.Settings;
+import org.example.cronoplanv2.model.Task;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,11 +41,15 @@ public class TimerFragment extends Fragment {
     private TimerStatus timerStatus = TimerStatus.UNSTARTED;
 
     private ProgressBar progressBarCircle;
-    private TextView textViewTime;
-    private ImageView ivSettings;
-    private ImageView imageViewReset;
-    private ImageView imageViewStartStop;
+    private TextView textViewTime,tvTaskId;
+    private ImageView ivSettings,imageViewReset,imageViewStartStop;
     private CountDownTimer countDownTimer;
+    private EditText etTitleTimer,etDescripTimer;
+    private Spinner cbStatusTimer;
+    private ConstraintLayout clTimerTask;
+
+    private Task currentTask;
+    private final TaskDAO TASKDATA = new TaskDAO();
 
 
     public TimerFragment() {    }
@@ -49,6 +58,8 @@ public class TimerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            Bundle args = getArguments();
+            currentTask = (Task) args.getSerializable("task");
         }
     }
 
@@ -72,6 +83,7 @@ public class TimerFragment extends Fragment {
      * method to initialize the views
      */
     private void initViews(View view) {
+        clTimerTask = view.findViewById(R.id.clTimerTask);
         progressBarCircle = (ProgressBar) view.findViewById(R.id.progressBarCircle);
         textViewTime = (TextView) view.findViewById(R.id.tvTime);
         setTimerValues();
@@ -79,6 +91,25 @@ public class TimerFragment extends Fragment {
         imageViewReset = (ImageView) view.findViewById(R.id.ivReset);
         imageViewStartStop = (ImageView) view.findViewById(R.id.ivStartStop);
         ivSettings = (ImageView) view.findViewById(R.id.ivSettings);
+        tvTaskId=(TextView) view.findViewById(R.id.tvTaskIdTimer);
+        // create a ConstraintSet object
+        ConstraintSet constraintSet = new ConstraintSet();
+        // connect the constraintSet with the ConstraintLayout
+        constraintSet.clone(clTimerTask);
+        if(currentTask!=null){
+            tvTaskId.setVisibility(View.VISIBLE);
+            etTitleTimer = (EditText) view.findViewById(R.id.etTitleTimer);
+            etTitleTimer.setText(currentTask.getTitle());
+            etDescripTimer = (EditText) view.findViewById(R.id.etDescripTimer);
+            etDescripTimer.setText(currentTask.getDescription());
+            cbStatusTimer=(Spinner) view.findViewById(R.id.cbStatusTimer);
+            cbStatusTimer.setSelection(currentTask.getStatus());
+            tvTaskId.setText("ID: "+String.valueOf(currentTask.getId()));
+
+        }else{
+            clTimerTask.setVisibility(View.INVISIBLE);
+            tvTaskId.setVisibility(View.INVISIBLE);
+        }
     }
 
     /**
@@ -122,6 +153,8 @@ public class TimerFragment extends Fragment {
         //imageViewStartStop.setImageResource(R.drawable.icon_start);
         // changing the timer status to stopped
         timerStatus = TimerStatus.UNSTARTED;
+        insertTime();
+
     }
 
 
@@ -129,6 +162,7 @@ public class TimerFragment extends Fragment {
      * method to start and stop count down timer
      */
     private void startStop() {
+
         if (timerStatus == TimerStatus.UNSTARTED) {
 
             // call to initialize the timer values
@@ -143,6 +177,8 @@ public class TimerFragment extends Fragment {
             timerStatus = TimerStatus.STARTED;
             // call to start the count down timer
             startCountDownTimer();
+            insertTime();
+
 
         } else if (timerStatus == TimerStatus.STARTED){
 
@@ -153,7 +189,7 @@ public class TimerFragment extends Fragment {
             // changing the timer status to stopped
             timerStatus = TimerStatus.STOPPED;
             stopCountDownTimer();
-
+            insertTime();
         } else {
             // showing the reset icon
             imageViewReset.setVisibility(View.VISIBLE);
@@ -163,6 +199,7 @@ public class TimerFragment extends Fragment {
             timerStatus = TimerStatus.STARTED;
             // call to start the count down timer
             startCountDownTimer();
+            insertTime();
         }
 
     }
@@ -195,6 +232,8 @@ public class TimerFragment extends Fragment {
             public void onFinish() {
                 reset();
             }
+
+
         }.start();
         countDownTimer.start();
     }
@@ -233,8 +272,22 @@ public class TimerFragment extends Fragment {
 
 
     }
+    private void insertTime(){
+        String taskId = (String) tvTaskId.getText();
+        if(!taskId.equals("")){
+        int id = Integer.parseInt(taskId.split(" ")[1]); // Extract the second part after splitting on whitespace
+        TASKDATA.insertTime(id);}
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            insertTime();
+        }
 
     /**
      * set the settings in case they have changed
      */
-}
+}}
