@@ -55,10 +55,11 @@ public class TaskDAO {
         }
     }
 
-    public void insertTime(int id) {
+    public void insertTime(int id,boolean terminated) {
         try {
-            ps = CON.conectar().prepareStatement("exec pinsert_time ?");
+            ps = CON.conectar().prepareStatement("exec pinsert_time ?,?");
             ps.setInt(1,id);
+            ps.setBoolean(2,terminated);
             ps.execute();
             ps.close();
         } catch (SQLException e) {

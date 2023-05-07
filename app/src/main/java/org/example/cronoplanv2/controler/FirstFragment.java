@@ -1,5 +1,6 @@
 package org.example.cronoplanv2.controler;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,59 +9,106 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+
 import org.example.cronoplanv2.R;
+import org.example.cronoplanv2.model.ItemsDAO.ChartDAO;
+import org.example.cronoplanv2.model.ItemsDAO.TaskDAO;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FirstFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+
 public class FirstFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private BarChart barChart;
+    private BarDataSet barDataSet;
+    private final ChartDAO CHARTDATA = new ChartDAO();
     public FirstFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FirstFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FirstFragment newInstance(String param1, String param2) {
-        FirstFragment fragment = new FirstFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        View view = inflater.inflate(R.layout.fragment_first, container, false);
+        barChart=(BarChart) view.findViewById(R.id.weekBarGraph);
+        setdata();
+        xAxis();
+        yAxis();
+
+        return view;
+    }
+
+    private void setdata() {
+        /*ArrayList[] rawData = CHARTDATA.getData();
+        ArrayList<Float> x = (ArrayList<Float>) rawData[0];
+        ArrayList<Float> y = (ArrayList<Float>) rawData[1];
+        ArrayList<BarEntry> entries = new ArrayList<>(); //
+        for(int i=0; i<=x.size();i++) {
+            entries.add(new BarEntry(x.get(i), y.get(i)));
+        }*/
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0f, 44f));
+        entries.add(new BarEntry(1f, 30f));
+        entries.add(new BarEntry(2f, 20f));
+        entries.add(new BarEntry(3f, 30f));
+        entries.add(new BarEntry(4f, 55f));
+        barDataSet = new BarDataSet(entries,"week");
+
+        BarData data = new BarData();
+        data.addDataSet(barDataSet);
+        barChart.setData(data);
+    }
+
+    private void yAxis() {
+        //y axis modification
+        // get the y-axis object
+        YAxis yAxis = barChart.getAxisLeft();
+
+        // set the value formatter to convert floats to integers
+        yAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+        yAxis.setGranularity(1f);
+        barChart.invalidate();
+
+        // Get a reference to the right axis object and disable it
+        YAxis rightAxis = barChart.getAxisRight();
+        rightAxis.setEnabled(false);
+    }
+
+    private void xAxis() {
+        //x axis modification
+        // Get the X-axis object
+        XAxis xAxis = barChart.getXAxis();
+
+        // Set the value formatter for the X-axis labels
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(new String[]{"January", "February", "March", "April", "May"}));
+
+        // Enable the X-axis labels to be drawn
+        xAxis.setDrawLabels(true);
+        xAxis.setGranularity(1f);
     }
 }

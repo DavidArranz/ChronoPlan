@@ -153,7 +153,7 @@ public class TimerFragment extends Fragment {
         //imageViewStartStop.setImageResource(R.drawable.icon_start);
         // changing the timer status to stopped
         timerStatus = TimerStatus.UNSTARTED;
-        insertTime();
+        insertTime(false);
 
     }
 
@@ -177,7 +177,7 @@ public class TimerFragment extends Fragment {
             timerStatus = TimerStatus.STARTED;
             // call to start the count down timer
             startCountDownTimer();
-            insertTime();
+            insertTime(false);
 
 
         } else if (timerStatus == TimerStatus.STARTED){
@@ -189,7 +189,7 @@ public class TimerFragment extends Fragment {
             // changing the timer status to stopped
             timerStatus = TimerStatus.STOPPED;
             stopCountDownTimer();
-            insertTime();
+            insertTime(false);
         } else {
             // showing the reset icon
             imageViewReset.setVisibility(View.VISIBLE);
@@ -199,7 +199,7 @@ public class TimerFragment extends Fragment {
             timerStatus = TimerStatus.STARTED;
             // call to start the count down timer
             startCountDownTimer();
-            insertTime();
+            insertTime(false);
         }
 
     }
@@ -272,11 +272,11 @@ public class TimerFragment extends Fragment {
 
 
     }
-    private void insertTime(){
+    private void insertTime(boolean terminated){
         String taskId = (String) tvTaskId.getText();
         if(!taskId.equals("")){
         int id = Integer.parseInt(taskId.split(" ")[1]); // Extract the second part after splitting on whitespace
-        TASKDATA.insertTime(id);}
+        TASKDATA.insertTime(id,terminated);}
     }
 
     @Override
@@ -284,7 +284,7 @@ public class TimerFragment extends Fragment {
         super.onDestroy();
         if (countDownTimer != null) {
             countDownTimer.cancel();
-            insertTime();
+            insertTime(true);
         }
 
     /**
