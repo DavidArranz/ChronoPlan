@@ -20,7 +20,7 @@ public class SettingsDAO {
     public Settings getSettings() {
 
         try {
-            ps = CON.conectar().prepareStatement("select Time,User_id from SETTINGS where User_id like 'Default_user'");
+            ps = CON.conectar().prepareStatement("select Time,id_user  from SETTINGS where id_User like 'Default_user'");
             rs = ps.executeQuery();
             if (rs.next()) {
                 return new Settings(rs.getInt(1),rs.getString(2));

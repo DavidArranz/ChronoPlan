@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         navigation = findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.secondFragment);
+        loadSelectedFragment(secondFragment);
 
     }
 

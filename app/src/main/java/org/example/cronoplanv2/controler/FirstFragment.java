@@ -3,11 +3,13 @@ package org.example.cronoplanv2.controler;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -26,13 +28,17 @@ import org.example.cronoplanv2.model.ItemsDAO.TaskDAO;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import it.sephiroth.android.library.numberpicker.NumberPicker;
+
 
 public class FirstFragment extends Fragment {
     private BarChart barChart;
     private BarDataSet barDataSet;
-    private final ChartDAO CHARTDATA = new ChartDAO();
+    private NumberPicker npAmmount;
+    private Spinner smeasurement;
+    private final ChartDAO CHARTDATA;
     public FirstFragment() {
-        // Required empty public constructor
+        CHARTDATA = new ChartDAO();
     }
 
 
@@ -51,6 +57,8 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_first, container, false);
         barChart=(BarChart) view.findViewById(R.id.weekBarGraph);
+        npAmmount = (NumberPicker) view.findViewById(R.id.npAmountOf);
+        smeasurement = (Spinner) view.findViewById(R.id.cbTimeMeasure);
         setdata();
         xAxis();
         yAxis();
@@ -59,6 +67,9 @@ public class FirstFragment extends Fragment {
     }
 
     private void setdata() {
+        ArrayList<Float> x,y;
+        int measure=smeasurement.getSelectedItemPosition(),ammount=npAmmount.getProgress(),i;
+        ArrayList<BarEntry> entries = new ArrayList<>();
         /*ArrayList[] rawData = CHARTDATA.getData();
         ArrayList<Float> x = (ArrayList<Float>) rawData[0];
         ArrayList<Float> y = (ArrayList<Float>) rawData[1];
@@ -66,13 +77,30 @@ public class FirstFragment extends Fragment {
         for(int i=0; i<=x.size();i++) {
             entries.add(new BarEntry(x.get(i), y.get(i)));
         }*/
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, 44f));
-        entries.add(new BarEntry(1f, 30f));
-        entries.add(new BarEntry(2f, 20f));
-        entries.add(new BarEntry(3f, 30f));
-        entries.add(new BarEntry(4f, 55f));
-        barDataSet = new BarDataSet(entries,"week");
+
+        ArrayList[] xy = CHARTDATA.getData(smeasurement.getSelectedItemPosition(),npAmmount.getProgress());
+
+        x=xy[0];
+        y=xy[1];
+        i=0;
+        if(measure==0){
+        while(ammount>i || i==x.size()-1){
+            entries.add(new BarEntry(x.get(i), y.get(i)));
+            i--;
+        }
+        }else if(measure==1) {
+            while (ammount > i || i == x.size() - 1) {
+                entries.add(new BarEntry(x.get(i), y.get(i)));
+                i--;
+            }
+        }else{
+            while (ammount > i || i == x.size() - 1) {
+                entries.add(new BarEntry(x.get(i), y.get(i)));
+                i--;
+            }
+        }
+        barDataSet = new BarDataSet(entries,"Hours focused");
+        barDataSet.setColors(new int[]{ContextCompat.getColor(getContext(), R.color.green_light_2)});
 
         BarData data = new BarData();
         data.addDataSet(barDataSet);
@@ -93,6 +121,9 @@ public class FirstFragment extends Fragment {
         });
         yAxis.setGranularity(1f);
         barChart.invalidate();
+        barChart.setVisibleYRangeMinimum(2, YAxis.AxisDependency.LEFT);
+        barChart.setVisibleXRangeMinimum(2);
+
 
         // Get a reference to the right axis object and disable it
         YAxis rightAxis = barChart.getAxisRight();
