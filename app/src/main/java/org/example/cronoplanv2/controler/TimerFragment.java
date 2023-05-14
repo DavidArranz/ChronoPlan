@@ -1,6 +1,7 @@
 package org.example.cronoplanv2.controler;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -8,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,12 +44,12 @@ public class TimerFragment extends Fragment {
 
     private ProgressBar progressBarCircle;
     private TextView textViewTime,tvTaskId;
-    private ImageView ivSettings,imageViewReset,imageViewStartStop;
+    private ImageView ivSettings,imageViewReset,imageViewStartStop,ivEdit;
     private CountDownTimer countDownTimer;
     private EditText etTitleTimer,etDescripTimer;
     private Spinner cbStatusTimer;
     private ConstraintLayout clTimerTask;
-
+    boolean editFlag = true;
     private Task currentTask;
     private final TaskDAO TASKDATA = new TaskDAO();
 
@@ -92,23 +94,28 @@ public class TimerFragment extends Fragment {
         imageViewStartStop = (ImageView) view.findViewById(R.id.ivStartStop);
         ivSettings = (ImageView) view.findViewById(R.id.ivSettings);
         tvTaskId=(TextView) view.findViewById(R.id.tvTaskIdTimer);
+        ivEdit=(ImageView) view.findViewById(R.id.ivEditTask);
+
         // create a ConstraintSet object
         ConstraintSet constraintSet = new ConstraintSet();
         // connect the constraintSet with the ConstraintLayout
         constraintSet.clone(clTimerTask);
         if(currentTask!=null){
             tvTaskId.setVisibility(View.VISIBLE);
+            ivEdit.setVisibility(View.VISIBLE);
             etTitleTimer = (EditText) view.findViewById(R.id.etTitleTimer);
             etTitleTimer.setText(currentTask.getTitle());
             etDescripTimer = (EditText) view.findViewById(R.id.etDescripTimer);
             etDescripTimer.setText(currentTask.getDescription());
             cbStatusTimer=(Spinner) view.findViewById(R.id.cbStatusTimer);
+            cbStatusTimer.setEnabled(false);
             cbStatusTimer.setSelection(currentTask.getStatus());
             tvTaskId.setText("ID: "+String.valueOf(currentTask.getId()));
 
         }else{
             clTimerTask.setVisibility(View.INVISIBLE);
             tvTaskId.setVisibility(View.INVISIBLE);
+            ivEdit.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -133,6 +140,27 @@ public class TimerFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(),SettingsActivity.class);
                 startActivity(intent);
+            }
+        });
+        ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (editFlag) {
+                    ivEdit.setImageResource(R.drawable.salvar);
+                    cbStatusTimer.setEnabled(true);
+                    etTitleTimer.setEnabled(true);
+                    etDescripTimer.setEnabled(true);
+                    editFlag=false;
+                } else {
+                    ivEdit.setImageResource(R.drawable.editar);
+                    cbStatusTimer.setEnabled(false);
+                    etTitleTimer.setEnabled(false);
+                    etDescripTimer.setEnabled(false);
+                    editFlag=true;
+                    TASKDATA.updateTask(new Task(etTitleTimer.getText().toString(),etDescripTimer.getText().toString(),cbStatusTimer.getSelectedItemPosition(),Integer.parseInt(tvTaskId.getText().toString().split(" ")[1])));
+                }
+
             }
         });
     }

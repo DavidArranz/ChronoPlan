@@ -48,7 +48,7 @@
             app:layout_constraintStart_toEndOf="@+id/tvAmount"
             app:layout_constraintTop_toTopOf="@id/tvAmount"
             app:picker_max="1000"
-            app:picker_min="0"
+            app:picker_min="1"
             app:picker_tracker="exponential" />
 
         <TextView
@@ -62,7 +62,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/ivreload"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/reload"

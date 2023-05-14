@@ -17,54 +17,52 @@ public class ChartDAO {
     public ChartDAO() {CON = SQLConnection.getInstancia();}
 
     public ArrayList[] getData(int measure,int ammount) {
-        ArrayList<Float> x = new ArrayList<Float>();
         ArrayList<Float> y = new ArrayList<Float>();
-        ArrayList<String> ws = new ArrayList<String>();
+        ArrayList<String> x = new ArrayList<String>();
+        ArrayList<Integer> date = new ArrayList<Integer>();
 
 
             try {
                 if(measure == 0){
-                    ps = CON.conectar().prepareStatement("SELECT TOP ? [date], [hours_focused]" +
-                                                            "FROM [dbo].[V_TASK_TIME_DAYS]" +
-                                                            "ORDER BY [date] DESC");
+                    ps = CON.conectar().prepareStatement("SELECT TOP "+ammount+" CONVERT(varchar(8),[date],112) as [date],hours_focused" +
+                                                            " FROM V_TASK_TIME_DAYS " +
+                                                            "ORDER BY [date] ASC");
                 }else if(measure==1){
-                    ps = CON.conectar().prepareStatement("SELECT TOP ?"+
+                    ps = CON.conectar().prepareStatement("SELECT TOP "+ammount+" "+
                             "CONCAT(YEAR([date]) ,"+
-                            "RIGHT('00' + CONVERT(VARCHAR(2), DATEPART(WEEK, DATEADD(day,-2,[date]))), 2)) AS [date],"+
-                            "FORMAT(DATEADD(WEEK, DATEDIFF(WEEK, 0, DATEADD(day,-1,[date])), 0), 'dd MMM')"+
+                            "RIGHT('00' + CONVERT(VARCHAR(2), DATEPART(WEEK, DATEADD(day,0,[date]))), 2)) AS [date],"+
+                            "FORMAT(DATEADD(WEEK, DATEDIFF(WEEK, 0, DATEADD(day,-1,[date])), 0), 'dd MMM') "+
                     "AS [week_start],"+
-                            "SUM([hours_focused]) AS [total_hours_focused]"+
+                            "SUM([hours_focused]) AS [total_hours_focused] "+
                     "FROM"+
                             "[dbo].[V_TASK_TIME_DAYS]"+
-                    "GROUP BY"+
+                    "GROUP BY "+
                     "CONCAT(YEAR([date]) ,"+
-                            "RIGHT('00' + CONVERT(VARCHAR(2), DATEPART(WEEK, DATEADD(day,-2,[date]))), 2)),"+
-                    "FORMAT(DATEADD(WEEK, DATEDIFF(WEEK, 0, DATEADD(day,-1,[date])), 0), 'dd MMM')"+
-                    "ORDER BY"+
+                            "RIGHT('00' + CONVERT(VARCHAR(2), DATEPART(WEEK, DATEADD(day,0,[date]))), 2)),"+
+                    "FORMAT(DATEADD(WEEK, DATEDIFF(WEEK, 0, DATEADD(day,-1,[date])), 0), 'dd MMM') "+
+                    "ORDER BY "+
                     "CONCAT(YEAR([date]) ,"+
-                            "RIGHT('00' + CONVERT(VARCHAR(2), DATEPART(WEEK, DATEADD(day,-2,[date]))), 2)) DESC"
+                            "RIGHT('00' + CONVERT(VARCHAR(2), DATEPART(WEEK, DATEADD(day,0,[date]))), 2)) ASC"
   );
                 }else if(measure==2){
-                    ps = CON.conectar().prepareStatement("SELECT top ? "+
-                            "CONCAT(YEAR([date]), FORMAT(MONTH([date]),  '00')) AS [month],SUM([hours_focused]) AS [total_hours_focused] " +
-                            "FROM[dbo].[V_TASK_TIME_DAYS]"+
-                            "GROUP BY"+
-                            "YEAR([date]), MONTH([date])"+
-                            "ORDER BY"+
-                            "YEAR([date]), MONTH([date])");
+                    ps = CON.conectar().prepareStatement("SELECT top "+ammount+" "+
+                            "CONCAT(YEAR([date]), FORMAT(MONTH([date]),  '00')) AS [date],SUM([hours_focused]) AS [hours_focused] " +
+                            "FROM[dbo].[V_TASK_TIME_DAYS] "+
+                            "GROUP BY "+
+                            "YEAR([date]), MONTH([date]) "+
+                            "ORDER BY "+
+                            "YEAR([date]), MONTH([date]) ASC");
                 }
-                ps.setInt(ammount,1);
-
+                System.out.println(ps.toString());
                 rs = ps.executeQuery();
-                if(measure!=2){
+                if(measure!=1){
                 while (rs.next()) {
-                    x.add(rs.getFloat("date"));
                     y.add(rs.getFloat("hours_focused"));
+                    date.add(rs.getInt("date"));
                 }}else{
                     while (rs.next()) {
-                        x.add(rs.getFloat("date"));
-                        y.add(rs.getFloat("hours_focused"));
-                        ws.add(rs.getString("week_start"));
+                        y.add(rs.getFloat("total_hours_focused"));
+                        x.add(rs.getString("week_start"));
                     }
                 }
                 ps.close();
@@ -76,9 +74,10 @@ public class ChartDAO {
                 rs = null;
                 CON.desconectar();
             }
-            ArrayList[] xy = new ArrayList[2];
-            xy[0] = x;
+            ArrayList[] xy = new ArrayList[3];
             xy[1] = y;
+            xy[0] = x;
+            xy[2] = date;
 
             return xy;
     }

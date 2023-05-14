@@ -21,7 +21,7 @@ public class TaskDAO {
 
         ArrayList<Task> tasks = null;
         try {
-            ps = CON.conectar().prepareStatement("SELECT title,description,status,id_task from TASKS");
+            ps = CON.conectar().prepareStatement("SELECT title,description,status,id_task from TASKS where isDeleted = 0");
             tasks = new ArrayList<Task>();
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -41,7 +41,7 @@ public class TaskDAO {
 
     public void insertTask(Task newTask) {
         try {
-            ps = CON.conectar().prepareStatement("INSERT into TASKS (title,description,status) values(?,?,?) ");
+            ps = CON.conectar().prepareStatement("INSERT into TASKS (title,description,status,id_user) values(?,?,?,'Default_user') ");
             ps.setString(1,newTask.getTitle());
             ps.setString(2, newTask.getDescription());
             ps.setInt(3,newTask.getStatus());
@@ -60,6 +60,36 @@ public class TaskDAO {
             ps = CON.conectar().prepareStatement("exec pinsert_time ?,?");
             ps.setInt(1,id);
             ps.setBoolean(2,terminated);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ps = null;
+            CON.desconectar();
+        }
+    }
+
+    public void updateTask(Task task) {
+        try {
+            ps = CON.conectar().prepareStatement("UPDATE TASKS set title = ?,description = ?,status = ? where id_task = ? ");
+            ps.setString(1,task.getTitle());
+            ps.setString(2, task.getDescription());
+            ps.setInt(3,task.getStatus());
+            ps.setInt(4,task.getId());
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ps = null;
+            CON.desconectar();
+        }
+    }
+    public void deleteTask(int id){
+        try {
+            ps = CON.conectar().prepareStatement("UPDATE TASKS set isDeleted = 1 where id_task = ? ");
+            ps.setInt(1,id);
             ps.execute();
             ps.close();
         } catch (SQLException e) {

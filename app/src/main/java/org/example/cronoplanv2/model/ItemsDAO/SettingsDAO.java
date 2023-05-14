@@ -1,14 +1,11 @@
 package org.example.cronoplanv2.model.ItemsDAO;
 
-import org.example.cronoplanv2.controler.SettingsActivity;
 import org.example.cronoplanv2.model.SQLConnection;
 import org.example.cronoplanv2.model.Settings;
-import org.example.cronoplanv2.model.Task;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class SettingsDAO {
     private final SQLConnection CON;
@@ -20,10 +17,10 @@ public class SettingsDAO {
     public Settings getSettings() {
 
         try {
-            ps = CON.conectar().prepareStatement("select Time,id_user  from SETTINGS where id_User like 'Default_user'");
+            ps = CON.conectar().prepareStatement("select Time,id_user,char_ammount,char_time_measure  from SETTINGS where id_User like 'Default_user'");
             rs = ps.executeQuery();
             if (rs.next()) {
-                return new Settings(rs.getInt(1),rs.getString(2));
+                return new Settings(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4));
             }
 
         } catch (SQLException e) {
@@ -38,7 +35,7 @@ public class SettingsDAO {
 
     public void save(int mins) {
         try {
-            ps = CON.conectar().prepareStatement("Update SETTINGS set Time=?,isUpdated=1 where User_id like 'Default_user'");
+            ps = CON.conectar().prepareStatement("Update SETTINGS set Time=?,isUpdated=1 where id_user like 'Default_user'");
             ps.setInt(1,mins);
             rs = ps.executeQuery();
 
@@ -54,11 +51,11 @@ public class SettingsDAO {
     public boolean isUpdated() {
 
         try {
-            ps = CON.conectar().prepareStatement("select isUpdated from SETTINGS where User_id like 'Default_user'");
+            ps = CON.conectar().prepareStatement("select isUpdated from SETTINGS where id_user like 'Default_user'");
             rs = ps.executeQuery();
             if (rs.next()) {
                 if(rs.getBoolean(1)){
-                    ps = CON.conectar().prepareStatement("update SETTINGS set isUpdated=0 where User_id like 'Default_user'");
+                    ps = CON.conectar().prepareStatement("update SETTINGS set isUpdated=0 where id_user like 'Default_user'");
                     ps.executeUpdate();
                     return true;
                 }else{
@@ -76,5 +73,19 @@ public class SettingsDAO {
             CON.desconectar();
         }
         return false;
+    }
+
+    public void save(int measure, int ammount) {
+        try {
+            ps = CON.conectar().prepareStatement("Update SETTINGS set char_time_measure="+measure+",char_ammount="+ammount+" where id_user like 'Default_user'");
+            ps.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ps = null;
+            rs = null;
+            CON.desconectar();
+        }
     }
 }
