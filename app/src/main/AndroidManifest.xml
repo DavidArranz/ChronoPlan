@@ -14,7 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CronoPlanV2"
-        android:networkSecurityConfig="@xml/networ_security_config"
         tools:targetApi="31">
         <activity
             android:name=".controler.SettingsActivity"
