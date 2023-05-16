@@ -190,4 +190,15 @@
         app:layout_constraintBottom_toTopOf="@+id/clTimerTask"
         app:layout_constraintStart_toEndOf="@+id/tvTaskIdTimer"
         app:srcCompat="@drawable/editar" />
+
+    <ImageView
+        android:id="@+id/ivDeleteTask"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/ivEditTask"
+        app:layout_constraintStart_toEndOf="@+id/ivEditTask"
+        app:srcCompat="@drawable/borrar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

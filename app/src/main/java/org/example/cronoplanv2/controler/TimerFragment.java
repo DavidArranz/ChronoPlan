@@ -1,5 +1,7 @@
 package org.example.cronoplanv2.controler;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -44,7 +46,7 @@ public class TimerFragment extends Fragment {
 
     private ProgressBar progressBarCircle;
     private TextView textViewTime,tvTaskId;
-    private ImageView ivSettings,imageViewReset,imageViewStartStop,ivEdit;
+    private ImageView ivSettings,imageViewReset,imageViewStartStop,ivEdit,ivDeleteTask;
     private CountDownTimer countDownTimer;
     private EditText etTitleTimer,etDescripTimer;
     private Spinner cbStatusTimer;
@@ -95,6 +97,7 @@ public class TimerFragment extends Fragment {
         ivSettings = (ImageView) view.findViewById(R.id.ivSettings);
         tvTaskId=(TextView) view.findViewById(R.id.tvTaskIdTimer);
         ivEdit=(ImageView) view.findViewById(R.id.ivEditTask);
+        ivDeleteTask=(ImageView) view.findViewById(R.id.ivDeleteTask);
 
         // create a ConstraintSet object
         ConstraintSet constraintSet = new ConstraintSet();
@@ -103,6 +106,7 @@ public class TimerFragment extends Fragment {
         if(currentTask!=null){
             tvTaskId.setVisibility(View.VISIBLE);
             ivEdit.setVisibility(View.VISIBLE);
+            ivDeleteTask.setVisibility(View.VISIBLE);
             etTitleTimer = (EditText) view.findViewById(R.id.etTitleTimer);
             etTitleTimer.setText(currentTask.getTitle());
             etDescripTimer = (EditText) view.findViewById(R.id.etDescripTimer);
@@ -111,6 +115,7 @@ public class TimerFragment extends Fragment {
             cbStatusTimer.setEnabled(false);
             cbStatusTimer.setSelection(currentTask.getStatus());
             tvTaskId.setText("ID: "+String.valueOf(currentTask.getId()));
+
 
         }else{
             clTimerTask.setVisibility(View.INVISIBLE);
@@ -163,6 +168,28 @@ public class TimerFragment extends Fragment {
 
             }
         });
+        ivDeleteTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Confirmation");
+                builder.setMessage("Are you sure you want to delete this task?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Perform the delete operation here
+                        deleteTask();
+                    }
+                });
+                builder.setNegativeButton("No", null);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+    }
+    private void deleteTask(){
+        TASKDATA.deleteTask(Integer.parseInt(tvTaskId.getText().toString().split(" ")[1]));
     }
     /**
      * method to reset count down timer
