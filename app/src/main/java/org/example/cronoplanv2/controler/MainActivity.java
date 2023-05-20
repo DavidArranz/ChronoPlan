@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -17,14 +16,21 @@ import org.example.cronoplanv2.model.ItemsDAO.SettingsDAO;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-
+/**
+ * Clase MainActivity que actúa como controlador principal de la aplicación.
+ * Administra la navegación entre fragmentos y configura la barra de navegación inferior.
+ */
 public class MainActivity extends AppCompatActivity {
     private final SettingsDAO SETTINGS = new SettingsDAO();
-    private FirstFragment firstFragment = new FirstFragment();
+    private ChartFragment firstFragment = new ChartFragment();
     private KanbanFragment secondFragment = new KanbanFragment();
     private TimerFragment thirdFragment = new TimerFragment();
     private BottomNavigationView navigation;
     private NavigationView navigationView;
+    /**
+     * Método llamado al crear la actividad principal.
+     * Configura la interfaz de usuario, solicita permisos y carga el fragmento inicial.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +64,19 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-
+    /**
+     * Carga el fragmento seleccionado en el contenedor de fragmentos.
+     * @param fragment El fragmento que se va a cargar.
+     */
     public void loadSelectedFragment(Fragment fragment){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container,fragment);
         transaction.commit();
     }
-
+    /**
+     * Carga el fragmento seleccionado en el contenedor de fragmentos.
+     * @param f El fragmento que se va a cargar.
+     */
     public void setNavigationBar(int f){
         if(f==1){
             navigation.setSelectedItemId(R.id.firstFragment);

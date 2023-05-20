@@ -23,7 +23,10 @@ import org.example.cronoplanv2.model.ItemsDAO.TaskDAO;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Clase KanbanFragment que representa un fragmento del tablero Kanban en la aplicación Cronoplan.
+ * Administra la visualización y manipulación de tareas en las secciones "To do", "Doing" y "Done".
+ */
 public class KanbanFragment extends Fragment {
     private List<Task> toDoTasks = new ArrayList<>();
     private List<Task> doingTasks = new ArrayList<>();
@@ -41,10 +44,15 @@ public class KanbanFragment extends Fragment {
 
     private final TaskDAO TASKDATA = new TaskDAO();
 
-
+    /**
+     * Constructor por defecto de KanbanFragment.
+     */
     public KanbanFragment() {
     }
-
+    /**
+     * Método llamado al crear el fragmento.
+     * Inicializa las vistas, los adaptadores y los listeners, y configura los RecyclerViews.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +103,10 @@ public class KanbanFragment extends Fragment {
         return view;
     }
 
-    //update() refreshes the kanban data
+    /**
+     * Actualiza los datos del tablero Kanban.
+     * Recupera las tareas de la base de datos y las asigna a las listas correspondientes.
+     */
     public void update(){
         toDoTasks.clear();
         doingTasks.clear();
@@ -115,7 +126,10 @@ public class KanbanFragment extends Fragment {
             }
         }
     }
-
+    /**
+     *  Inicializa las vistas del fragmento.
+     * Asocia las vistas del layout a las variables correspondientes.
+     */
     private void initViews(View view) {
         // Inicializacion reciclerviews
         toDoRecyclerView = view.findViewById(R.id.toDoRecyclerView);
@@ -123,7 +137,10 @@ public class KanbanFragment extends Fragment {
         doneRecyclerView = view.findViewById(R.id.doneRecyclerView);
         bnAddTask = view.findViewById(R.id.bnAssTask);
     }
-
+    /**
+     * Inicializa los listeners del fragmento.
+     * Asocia los listeners a los botones o vistas relevantes.
+     */
     private void initListeners() {
         bnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,9 +150,10 @@ public class KanbanFragment extends Fragment {
         });
     }
 
-    /*
-    * Dialog for creating tasks
-    */
+    /**
+     * Abre el diálogo para agregar una nueva tarea.
+     * Permite al usuario ingresar los detalles de la tarea y guardarla.
+     */
     private void openAddTaskDialog() {
         // Create a new dialog
         Dialog dialog = new Dialog(requireContext());

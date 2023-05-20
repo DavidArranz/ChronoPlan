@@ -84,7 +84,7 @@ public class TimerFragment extends Fragment {
         return view;
     }
     /**
-     * method to initialize the views
+     * Método para inicializar las vistas
      */
     private void initViews(View view) {
         clTimerTask = view.findViewById(R.id.clTimerTask);
@@ -125,7 +125,7 @@ public class TimerFragment extends Fragment {
     }
 
     /**
-     * method to initialize the click listeners
+     * Método para inicializar los listeners de los eventos
      */
     private void initListeners(View view) {
         imageViewReset.setOnClickListener(new View.OnClickListener() {
@@ -192,7 +192,7 @@ public class TimerFragment extends Fragment {
         TASKDATA.deleteTask(Integer.parseInt(tvTaskId.getText().toString().split(" ")[1]));
     }
     /**
-     * method to reset count down timer
+     * Método para reiniciar el temporizador
      */
     private void reset() {
         stopCountDownTimer();
@@ -214,7 +214,7 @@ public class TimerFragment extends Fragment {
 
 
     /**
-     * method to start and stop count down timer
+     * Método para iniciar o detener el temporizador
      */
     private void startStop() {
 
@@ -260,7 +260,7 @@ public class TimerFragment extends Fragment {
     }
 
     /**
-     * method to initialize the values for count down timer
+     * Método para inicializar los valores del temporizador
      */
     private void setTimerValues() {
         // assigning values after converting to milliseconds
@@ -268,7 +268,7 @@ public class TimerFragment extends Fragment {
     }
 
     /**
-     * method to start count down timer
+     * Método para iniciar el temporizador de cuenta regresiva
      */
     private void startCountDownTimer() {
 
@@ -294,14 +294,14 @@ public class TimerFragment extends Fragment {
     }
 
     /**
-     * method to stop count down timer
+     * Método para detener el temporizador de cuenta regresiva
      */
     private void stopCountDownTimer() {
         countDownTimer.cancel();
     }
 
     /**
-     * method to set circular progress bar values
+     * Método para establecer los valores de la barra de progreso circular
      */
     private void setProgressBarValues() {
 
@@ -311,10 +311,10 @@ public class TimerFragment extends Fragment {
 
 
     /**
-     * method to convert millisecond to time format
+     * Método para convertir milisegundos a formato de tiempo
      *
      * @param milliSeconds
-     * @return HH:mm:ss time formatted string
+     * @return Cadena de texto con el formato HH:mm:ss
      */
     private String hmsTimeFormatter(long milliSeconds) {
 
@@ -327,6 +327,11 @@ public class TimerFragment extends Fragment {
 
 
     }
+    /**
+     * Método para insertar el tiempo en la base de datos
+     *
+     * @param terminated Indica si el temporizador fue terminado o no
+     */
     private void insertTime(boolean terminated){
         String taskId = (String) tvTaskId.getText();
         if(!taskId.equals("")){
@@ -342,7 +347,4 @@ public class TimerFragment extends Fragment {
             insertTime(true);
         }
 
-    /**
-     * set the settings in case they have changed
-     */
 }}

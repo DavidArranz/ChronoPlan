@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/firstFragment"
-        android:icon="@android:drawable/ic_input_add"
-        android:title="Primero"/>
+        android:icon="@drawable/barra_grafica"
+        android:title="Chart"/>
 
     <item
         android:id="@+id/secondFragment"

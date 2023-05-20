@@ -20,23 +20,23 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import org.example.cronoplanv2.R;
 import org.example.cronoplanv2.model.ItemsDAO.ChartDAO;
 import org.example.cronoplanv2.model.ItemsDAO.SettingsDAO;
-import org.example.cronoplanv2.model.ItemsDAO.TaskDAO;
 import org.example.cronoplanv2.model.Settings;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import it.sephiroth.android.library.numberpicker.NumberPicker;
 
-
-public class FirstFragment extends Fragment {
+/**
+ * Clase ChartFragment que representa un fragmento para mostrar un gráfico de barras en la aplicación Cronoplan.
+ * Administra la visualización y configuración del gráfico de barras, así como la interacción con los controles de configuración.
+ */
+public class ChartFragment extends Fragment {
     private BarChart barChart;
     private BarDataSet barDataSet;
     private NumberPicker npAmmount;
@@ -45,7 +45,7 @@ public class FirstFragment extends Fragment {
     private final SettingsDAO SETTINGS;
     private ImageView ivReload;
     private int measure,ammount;
-    public FirstFragment() {
+    public ChartFragment() {
         CHARTDATA = new ChartDAO();
         SETTINGS = new SettingsDAO();
     }
@@ -83,16 +83,25 @@ public class FirstFragment extends Fragment {
 
         return view;
     }
-
+    /**
+     * Configura los valores de los controles de configuración (NumberPicker y Spinner) con los valores guardados en la base de datos.
+     */
     private void setSettings() {
         Settings settings = SETTINGS.getSettings();
         npAmmount.setProgress(settings.getChart_ammount());
         smeasurement.setSelection(settings.getChart_time_interval());
     }
+    /**
+     * Guarda los valores seleccionados en los controles de configuración en la base de datos.
+     */
     private void saveSettings(){
         SETTINGS.save(smeasurement.getSelectedItemPosition(),npAmmount.getProgress());
     }
 
+    /**
+     * Configura los datos del gráfico de barras utilizando los valores seleccionados en los controles de configuración.
+     * Obtiene los datos del gráfico de la base de datos y los muestra en el gráfico de barras.
+     */
     private void setdata() {
         ArrayList<Float> y;
         ArrayList<String> x;
@@ -147,7 +156,10 @@ public class FirstFragment extends Fragment {
         barChart.notifyDataSetChanged();// Notify the chart that the data has changed
         barChart.invalidate();// Redraw the chart
     }
-
+    /**
+     * Configura el eje Y del gráfico de barras.
+     * Define el formato de los valores del eje Y y configura las propiedades del eje.
+     */
     private void yAxis() {
         //y axis modification
         // get the y-axis object
@@ -171,7 +183,10 @@ public class FirstFragment extends Fragment {
         YAxis rightAxis = barChart.getAxisRight();
         rightAxis.setEnabled(false);
     }
-
+    /**
+     * Configura el eje X del gráfico de barras.
+     * Define las propiedades del eje X, como la posición de las etiquetas y el formato de las mismas.
+     */
     private void xAxis() {
         //x axis modification
         // Get the X-axis object
