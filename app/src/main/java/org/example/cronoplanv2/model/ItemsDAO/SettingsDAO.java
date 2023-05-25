@@ -12,7 +12,7 @@ public class SettingsDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    public SettingsDAO() {CON = SQLConnection.getInstancia();}
+    public SettingsDAO() {CON =  SQLConnection.getInstancia();}
 
     public Settings getSettings() {
 

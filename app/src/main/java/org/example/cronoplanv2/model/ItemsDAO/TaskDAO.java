@@ -14,14 +14,14 @@ public class TaskDAO {
     private PreparedStatement ps;
     private ResultSet rs;
     public TaskDAO() {
-        CON = SQLConnection.getInstancia();
+        CON =   SQLConnection.getInstancia();
     }
 
     public ArrayList<Task> list() {
 
         ArrayList<Task> tasks = null;
         try {
-            ps = CON.conectar().prepareStatement("SELECT title,description,status,id_task from TASKS where isDeleted = 0");
+            ps = CON.conectar().prepareStatement("SELECT title,description,status,id_task from [dbo].[TASKS] where isDeleted = 0");
             tasks = new ArrayList<Task>();
             rs = ps.executeQuery();
             while (rs.next()) {

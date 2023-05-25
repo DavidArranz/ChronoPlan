@@ -103,6 +103,7 @@ public class TimerFragment extends Fragment {
         ConstraintSet constraintSet = new ConstraintSet();
         // connect the constraintSet with the ConstraintLayout
         constraintSet.clone(clTimerTask);
+        //check if a task has been pressed
         if(currentTask!=null){
             tvTaskId.setVisibility(View.VISIBLE);
             ivEdit.setVisibility(View.VISIBLE);
@@ -115,8 +116,6 @@ public class TimerFragment extends Fragment {
             cbStatusTimer.setEnabled(false);
             cbStatusTimer.setSelection(currentTask.getStatus());
             tvTaskId.setText("ID: "+String.valueOf(currentTask.getId()));
-
-
         }else{
             clTimerTask.setVisibility(View.INVISIBLE);
             tvTaskId.setVisibility(View.INVISIBLE);
@@ -346,5 +345,5 @@ public class TimerFragment extends Fragment {
             countDownTimer.cancel();
             insertTime(true);
         }
-
-}}
+    }
+}

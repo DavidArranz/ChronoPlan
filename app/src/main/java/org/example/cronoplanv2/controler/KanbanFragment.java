@@ -99,7 +99,7 @@ public class KanbanFragment extends Fragment {
         itemTouchHelperToDo.attachToRecyclerView(toDoRecyclerView);
         itemTouchHelperInProgress.attachToRecyclerView(doingRecyclerView);
         itemTouchHelperDone.attachToRecyclerView(doneRecyclerView);
-        update();
+        update(); //actualiza el kanban
         return view;
     }
 

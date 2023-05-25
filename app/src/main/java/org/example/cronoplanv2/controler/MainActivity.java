@@ -13,9 +13,13 @@ import android.view.MenuItem;
 
 import org.example.cronoplanv2.R;
 import org.example.cronoplanv2.model.ItemsDAO.SettingsDAO;
+import org.example.cronoplanv2.model.SQLConnection;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.sql.SQLException;
+
 /**
  * Clase MainActivity que actúa como controlador principal de la aplicación.
  * Administra la navegación entre fragmentos y configura la barra de navegación inferior.
