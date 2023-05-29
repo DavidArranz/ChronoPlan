@@ -196,7 +196,6 @@ public class ChartFragment extends Fragment {
         xAxis.setGranularity(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false); // hide x-axis grid lines
-
             xAxis.setLabelRotationAngle(-35);//label tilt to avoid superposition
     }
 }

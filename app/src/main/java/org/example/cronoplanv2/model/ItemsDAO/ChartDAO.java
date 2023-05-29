@@ -26,7 +26,7 @@ public class ChartDAO {
                 if(measure == 0){
                     ps = CON.conectar().prepareStatement("SELECT TOP "+ammount+" CONVERT(varchar(8),[date],112) as [date],hours_focused" +
                                                             " FROM V_TASK_TIME_DAYS " +
-                                                            "ORDER BY [date] ASC");
+                                                            "ORDER BY [date] desc");
                 }else if(measure==1){
                     ps = CON.conectar().prepareStatement("SELECT TOP "+ammount+" "+
                             "CONCAT(YEAR([date]) ,"+
@@ -42,7 +42,7 @@ public class ChartDAO {
                     "FORMAT(DATEADD(WEEK, DATEDIFF(WEEK, 0, DATEADD(day,-1,[date])), 0), 'dd MMM') "+
                     "ORDER BY "+
                     "CONCAT(YEAR([date]) ,"+
-                            "RIGHT('00' + CONVERT(VARCHAR(2), DATEPART(WEEK, DATEADD(day,0,[date]))), 2)) ASC"
+                            "RIGHT('00' + CONVERT(VARCHAR(2), DATEPART(WEEK, DATEADD(day,0,[date]))), 2)) desc"
   );
                 }else if(measure==2){
                     ps = CON.conectar().prepareStatement("SELECT top "+ammount+" "+
@@ -51,7 +51,7 @@ public class ChartDAO {
                             "GROUP BY "+
                             "YEAR([date]), MONTH([date]) "+
                             "ORDER BY "+
-                            "YEAR([date]), MONTH([date]) ASC");
+                            "YEAR([date]), MONTH([date]) desc");
                 }
                 System.out.println(ps.toString());
                 rs = ps.executeQuery();
