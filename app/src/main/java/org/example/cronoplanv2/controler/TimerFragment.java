@@ -96,6 +96,7 @@ public class TimerFragment extends Fragment {
         imageViewStartStop = (ImageView) view.findViewById(R.id.ivStartStop);
         ivSettings = (ImageView) view.findViewById(R.id.ivSettings);
         tvTaskId=(TextView) view.findViewById(R.id.tvTaskIdTimer);
+        tvTaskId.setVisibility(View.INVISIBLE);
         ivEdit=(ImageView) view.findViewById(R.id.ivEditTask);
         ivDeleteTask=(ImageView) view.findViewById(R.id.ivDeleteTask);
 
@@ -105,7 +106,6 @@ public class TimerFragment extends Fragment {
         constraintSet.clone(clTimerTask);
         //check if a task has been pressed
         if(currentTask!=null){
-            tvTaskId.setVisibility(View.VISIBLE);
             ivEdit.setVisibility(View.VISIBLE);
             ivDeleteTask.setVisibility(View.VISIBLE);
             etTitleTimer = (EditText) view.findViewById(R.id.etTitleTimer);
@@ -118,7 +118,6 @@ public class TimerFragment extends Fragment {
             tvTaskId.setText("ID: "+String.valueOf(currentTask.getId()));
         }else{
             clTimerTask.setVisibility(View.INVISIBLE);
-            tvTaskId.setVisibility(View.INVISIBLE);
             ivEdit.setVisibility(View.INVISIBLE);
         }
     }

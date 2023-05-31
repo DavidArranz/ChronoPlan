@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="76dp"
         android:layout_marginTop="76dp"
-        android:text="Time (minutes)"
+        android:text="@string/settings_time_minutes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,4 +41,26 @@
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Spinner
+        android:id="@+id/cbLang"
+        android:layout_width="113dp"
+        android:layout_height="42dp"
+        android:clickable="false"
+        android:entries="@array/lang_array"
+        android:focusable="auto"
+        android:visibility="visible"
+        numberpicker:layout_constraintBaseline_toBaselineOf="@+id/textView13"
+        numberpicker:layout_constraintEnd_toEndOf="parent"
+        numberpicker:layout_constraintHorizontal_bias="0.838"
+        numberpicker:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/language"
+        numberpicker:layout_constraintStart_toStartOf="@+id/textView"
+        numberpicker:layout_constraintTop_toBottomOf="@+id/textView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

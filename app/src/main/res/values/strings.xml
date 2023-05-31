@@ -1,12 +1,28 @@
 <resources>
-    <string name="app_name">CronoPlanV2</string>
+    <string name="app_name">CronoPlan</string>
+    <string name="settings_time_minutes">Time (minutes)</string>
+    <string name="task_title">Title</string>
+    <string name="task_description">Description</string>
+    <string name="task_status">Status</string>
+    <string name="bn_save">Save</string>
+    <string name="time_period">Time period:</string>
+    <string name="measure_ammount">Number of periods:</string>
+    <string name="to_do">To do...</string>
+    <string name="doing">Doing...</string>
+    <string name="done">Done...</string>
+    <string name="kanban_board">Kanban Board</string>
+    <string name="language">Language</string>
+    <string-array name="lang_array">
+        <item>English</item>
+        <item>Spanish</item>
+    </string-array>
     <string-array name="status_array">
-        <item>todo</item>
-        <item>doing</item>
-        <item>done</item>
+        <item>To do</item>
+        <item>Doing</item>
+        <item>Done</item>
     </string-array>
     <string-array name="time_measure_array">
-        <item>Dais</item>
+        <item>Days</item>
         <item>Weeks</item>
         <item>Months</item>
     </string-array>

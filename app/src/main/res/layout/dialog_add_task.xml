@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Title"
+        android:text="@string/task_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Description"
+        android:text="@string/task_description"
         app:layout_constraintStart_toStartOf="@+id/etTitle"
         app:layout_constraintTop_toBottomOf="@+id/etTitle" />
 
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Status"
+        android:text="@string/task_status"
         app:layout_constraintStart_toStartOf="@+id/etDescrip"
         app:layout_constraintTop_toBottomOf="@+id/etDescrip" />
 
@@ -64,7 +64,7 @@
         android:id="@+id/bnSaveTask"
         android:layout_width="72dp"
         android:layout_height="38dp"
-        android:text="Save"
+        android:text="@string/bn_save"
         android:textSize="13sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/cbStatus"
         app:layout_constraintEnd_toEndOf="@+id/etDescrip"
