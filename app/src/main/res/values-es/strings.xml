@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CronoPlan</string>
-    <string name="settings_time_minutes">Tiempo (minutos)</string>
-    <string name="task_title">Titulo</string>
-    <string name="task_description">Descripción</string>
-    <string name="task_status">Estatus</string>
-    <string name="bn_save">Guardar</string>
-    <string name="time_period">Periodo de tiempo:</string>
-    <string name="measure_ammount">Cantidad de periodos:</string>
-    <string name="to_do">Por hacer...</string>
-    <string name="doing">Haciendo...</string>
-    <string name="done">Hecho...</string>
-    <string name="kanban_board">Tabla Kanban</string>
-    <string name="language">Idioma</string>
+    <string name="settings_time_minutes">Time (minutes)</string>
+    <string name="task_title">Title</string>
+    <string name="task_description">Description</string>
+    <string name="task_status">Status</string>
+    <string name="bn_save">Save</string>
+    <string name="time_period">Time period:</string>
+    <string name="measure_ammount">Number of periods:</string>
+    <string name="to_do">To do...</string>
+    <string name="doing">Doing...</string>
+    <string name="done">Done...</string>
+    <string name="kanban_board">Kanban Board</string>
+    <string name="language">Language</string>
     <string-array name="lang_array">
         <item>English</item>
         <item>Spanish</item>
     </string-array>
     <string-array name="status_array">
-        <item>Por hacer</item>
-        <item>Haciendo</item>
-        <item>Hecho</item>
+        <item>To do</item>
+        <item>Doing</item>
+        <item>Done</item>
     </string-array>
     <string-array name="time_measure_array">
-        <item>Dias</item>
-        <item>Semanas</item>
-        <item>Meses</item>
+        <item>Days</item>
+        <item>Weeks</item>
+        <item>Months</item>
     </string-array>
 </resources>
