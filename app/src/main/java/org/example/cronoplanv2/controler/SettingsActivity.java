@@ -44,10 +44,10 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SETTINGS.save(npTime.getProgress());
                 if(cb_lang.getSelectedItemPosition()==0){
-                    setLocal(SettingsActivity.this,"en");
+                    setLocal("en");
                     System.out.println(SettingsActivity.this.getResources().getConfiguration().locale.getLanguage());
                 } else {
-                    setLocal(SettingsActivity.this,"es");
+                    setLocal("es");
                     System.out.println(SettingsActivity.this.getResources().getConfiguration().locale.getLanguage());
                 }
                 // Close the SettingsActivity
@@ -56,10 +56,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
     }
-    public void setLocal(Activity activity, String langCode){
+    public void setLocal( String langCode){
         Locale locale = new Locale(langCode);
-        Locale.setDefault(locale);
-        Resources resources = activity.getResources();
+        Resources resources = getResources();
         Configuration config = resources.getConfiguration();
         config.setLocale(locale);
         resources.updateConfiguration(config,resources.getDisplayMetrics());
